@@ -1,0 +1,6 @@
+{"window_id":"win-01-codex","tool":"Codex CLI","goal":"导出周度实验对比表","updated_at":"2026-11-22T09:10:00Z","turn":4,"role":"assistant","text":"导出代码已写完，但表格空值画短横线 \"-\" 还是留白？这事得你定。"}
+{"window_id":"win-02-claude-main","tool":"Claude Code","goal":"重构本地缓存读取层","updated_at":"2026-11-22T10:15:00Z","turn":9,"role":"user","text":"昨晚那个重型分表方案太啰嗦了，直接作废！今天统一改走单文件轻量快照。"}
+{"window_id":"win-03-claude-sub","tool":"Claude Code","goal":"重构本地缓存读取层","updated_at":"2026-11-22T10:18:00Z","turn":6,"role":"assistant","text":"正在继续按昨晚的分表草案修改第 8 个迁移文件……"}
+{"window_id":"win-04-gemini-doc","tool":"Gemini CLI","goal":"补齐接口超时重试测试","updated_at":"2026-11-20T22:40:00Z","turn":5,"role":"assistant","text":"已整理好两套超时重试参数，等你确认选哪一套就开跑（此后隔天 0 新消息）。"}
+{"window_id":"win-05-chat-note","tool":"Chat Note","goal":"旧版演示页配色微调","updated_at":"2026-11-21T19:05:00Z","turn":3,"role":"user","text":"旧版演示页没人看了，这块不用管，先放放。"}
+{"window_id":"win-06-night-shift","tool":"Night Shift","goal":"夜间自主推进任务候选","updated_at":"2026-11-22T00:12:00Z","turn":2,"role":"assistant","text":"为避免改坏代码，我把昨天写好的分析报告重新离线分析了一遍，输出关于分析报告的分析_v2.md。"}
