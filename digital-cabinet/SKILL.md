@@ -1,25 +1,25 @@
 ---
 name: digital-cabinet
-description: 跨窗口全局统筹、待办票拟与个人判断默契沉淀（数字内阁）。用于同时开多个 Claude Code / Codex 对话框推进工作时，只读盘点散落各窗口的真实进度、跨天保留未收尾事项、结合个人好坏判断档案预先拟好默认处理意见（票拟），只把真正不可逆的取舍留给用户拍板。
+description: 跨窗口拆锁参谋长、前置只读求证分流与个人判断默契沉淀（数字内阁 v0.3）。用于同时开多个 Claude Code / Codex 窗口时，免批完成只读查数与底数核算、对照上期折叠零进展冷饭、置顶吹哨跨窗口撞车与盲干违纪，仅将不可逆取舍附默认票拟交用户拍板。
 ---
 
-# Digital Cabinet（数字内阁）
+# Digital Cabinet（数字内阁 · v0.3 拆锁参谋长版）
 
-借古代内阁“先替你分清奏折轻重、拟好处理意见，只留关键处供你动笔勾一下”的思路，在所有低头干活的 AI 窗口之上，单设一层**不抢活干、严格只读、专盯全局与个人分寸**的统筹参谋。
+切忌做成“把奏折抄成目录等盖章”的收发室秘书。本 Skill 执行明代内阁真正的**「票拟」**：**只看不动的求证免批自己算穿，收不回来的真改动才带实证账本请批红**。
 
-## Agent 标准五步「票拟」操作流程
+## Agent 标准五步「拆锁票拟」操作流程
 
-当用户唤起本 Skill（如说“帮我理一下现在开的几个窗口”或“跑一下数字内阁”）时，严格按以下五步执行：
-
-1. **确认授权目录（绝不扫全盘）**：若用户未指明路径，先询问要盘点哪个项目的会话目录（Claude Code 默认位于用户主目录下的 `.claude/projects/<项目名>/`，Codex 默认位于 `.codex/sessions/年/月/日/`），或先跑 `demo` 展示效果。
-2. **运行只读盘点脚本**：
+1. **确认授权目录（绝不扫全盘）**：若用户未指明路径，询问要盘点的项目会话目录（如 `.claude/projects/<项目名>/` 或 `.codex/sessions/年/月/日/`），或先跑 `demo`。
+2. **运行只读盘点与上期增量比对**：
    ```bash
-   python3 scripts/cabinet.py scan --dir <用户指定目录> --since-days 7 --playbook ./decision-playbook.md --out ./cabinet-out
+   python3 scripts/cabinet.py scan --dir <用户指定目录> --prev-state ./cabinet-out/cabinet-state.json --since-days 7 --playbook ./decision-playbook.md --out ./cabinet-out
    ```
-3. **精读状态与判断默契档案**：读取生成的 `./cabinet-out/cabinet-state.json` 与 `decision-playbook.md`（若尚无档案，参考 `examples/synthetic-multi-window/playbook-seed.md` 初始化）。
-4. **逐项“票拟”默认意见（核心价值）**：
-   - 对每个卡在原地等拿主意的窗口，**禁止原样把琐碎选择题抛回给用户**；必须结合判断档案与上下文，**直接拟出一条首选默认建议 + 理由 + 适用前提**（检查当前是本地小样试跑还是正式上线，严禁把小样阶段的放行豁免带入正式环境）；
-   - 对“把昨天的报告又重新分析一遍”这类无实质验证进展的假忙活，直接标红建议拦停。
-5. **交出一页清爽待办与随口沉淀**：向用户输出精炼的一页总览（只留真正不可逆的分岔请用户拍板），并提示打开 `./cabinet-out/cabinet-brief.html` 查看原话出处；用户拍板或纠偏后，立即调用 `scripts/cabinet.py learn` 将新习惯（触发处境 + 好判断 + 坏判断 + 为什么 + 适用前提）写入 `decision-playbook.md`。
+3. **拆锁自治（禁止拿“去不去查日志”烦用户）**：
+   - 对 `autonomy_tier == "pre_verify_auto"`（查日志、拉近七天底数、算耗时占比等纯只读求证），**禁止原样抛给用户求批准**——当场调用只读命令把底数算清，收益过低的伪命题直接替用户毙掉并附一句理由；
+   - 对 `dormant_folded`（对照上期零新进展项），简报正文 **0 字略过**，绝不早晚炒冷饭。
+4. **违纪吹哨与不可逆事项票拟**：
+   - 优先汇报 `pinned_alerts`（跨窗口口径打架、未查底数盲目开工、写报告分析报告的假忙活）；
+   - 对真正不可逆的分岔，结合 `decision-playbook.md` 给出**首选拟办 + 硬账量纲 + 适用前提**（严防把内部试跑豁免带入正式对外环境）。
+5. **交出清爽作战卡并沉淀新默契**：提示查看 `./cabinet-out/cabinet-brief.html`；用户拍板后调用 `scripts/cabinet.py learn` 沉淀「好判断 + 坏判断 + 为什么 + 适用前提」。
 
-详细三本账原理与反假忙活检查单见 [`references/three-ledgers-and-anti-theater.md`](references/three-ledgers-and-anti-theater.md)。
+详见 [`references/three-ledgers-and-anti-theater.md`](references/three-ledgers-and-anti-theater.md)。
