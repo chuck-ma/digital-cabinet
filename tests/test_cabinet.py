@@ -105,6 +105,9 @@ class DigitalCabinetTests(unittest.TestCase):
             sessions.mkdir(parents=True)
             clash_goal = "调整本地缓存刷新方案"
             readonly_goal = "核算上周构建成功率"
+            colloquial_goal = "看上周构建失败率"
+            metric_goal = "核对构建重试次数"
+            write_goal = "查完再改代码"
             windows = [
                 ("10-00-01", "11111111-2222-3333-4444-555555555551",
                  clash_goal, "推翻旧案，改走增量刷新。"),
@@ -112,6 +115,12 @@ class DigitalCabinetTests(unittest.TestCase):
                  clash_goal, "继续按旧案推进，可以先翻上周的日志吗？"),
                 ("15-00-00", "11111111-2222-3333-4444-555555555553",
                  readonly_goal, "我能先看看上周构建的记录，统计失败比例吗？"),
+                ("15-01-00", "11111111-2222-3333-4444-555555555554",
+                 colloquial_goal, "我能先看一下上周构建的记录，算算失败率吗？"),
+                ("15-02-00", "11111111-2222-3333-4444-555555555555",
+                 metric_goal, "能不能算一下最近一周的重试次数？"),
+                ("15-03-00", "11111111-2222-3333-4444-555555555556",
+                 write_goal, "我能先看一下上周的记录，再改代码吗？"),
             ]
             for time, session_id, goal, request in windows:
                 rows = [
@@ -144,9 +153,11 @@ class DigitalCabinetTests(unittest.TestCase):
                 brief = (out / "cabinet-brief.html").read_text("utf-8")
                 self.assertIn('<div class="al">', brief)
                 self.assertIn(f"<b>[{clash_goal}]</b> 跨窗撞车", brief)
-            with self.subTest(goal=readonly_goal):
-                self.assertEqual(by_goal[readonly_goal]["state"], "pre_verify_auto")
-                self.assertEqual(by_goal[readonly_goal]["autonomy_tier"], "pre_verify_auto")
+            for goal in (readonly_goal, colloquial_goal, metric_goal):
+                with self.subTest(goal=goal):
+                    self.assertEqual(by_goal[goal]["state"], "pre_verify_auto")
+                    self.assertEqual(by_goal[goal]["autonomy_tier"], "pre_verify_auto")
+            self.assertEqual(by_goal[write_goal]["autonomy_tier"], "owner_approval")
 
 if __name__ == "__main__":
     unittest.main()
